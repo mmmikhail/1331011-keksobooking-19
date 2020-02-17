@@ -34,7 +34,7 @@ var makeElement = function (obj) {
   var pin = mapLabel.content.cloneNode(true);
   var locationX = obj.location.x - 40;
   var locationY = obj.location.y - 165;
-  pin.querySelector('.map__pin').setAttribute('style', 'left: ' +  locationX + 'px; top: ' + locationY + 'px;');
+  pin.querySelector('.map__pin').setAttribute('style', 'left: ' + locationX + 'px; top: ' + locationY + 'px;');
   var image = pin.querySelector('img');
   image.src = obj.author.avatar;
   image.alt = obj.offer.title;
