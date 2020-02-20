@@ -25,7 +25,31 @@ var nearectClassifiedArray = function () {
       var featureNum = getRandomInt(0, 5);
       newRoomFeatures.push(roomFeatures[featureNum]);
     }
-    array.push({'author': {'avatar': 'img/avatars/user0' + avatarNum + '.png'}, 'offer': {'title': '', 'address': '600, 350', 'price': 100, 'type': flat, 'rooms': getRandomInt(1, 4), 'guests': getRandomInt(1, 10), 'checkin': checkTimeIn, 'checkout': checkTimeOut, 'features': newRoomFeatures, 'description': '', 'photos': ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg']}, 'location': {'x': getRandomInt(10, 840), 'y': getRandomInt(130, 630)}});
+    array.push({
+      'author': {
+        'avatar': 'img/avatars/user0' + avatarNum + '.png'
+      },
+      'offer': {
+        'title': '',
+        'address': '600, 350',
+        'price': 100,
+        'type': flat,
+        'rooms': getRandomInt(1, 4),
+        'guests': getRandomInt(1, 10),
+        'checkin': checkTimeIn,
+        'checkout': checkTimeOut,
+        'features': newRoomFeatures,
+        'description': '',
+        'photos': [
+          'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+          'http://o0.github.io/assets/images/tokyo/hotel2.jpg'
+        ]
+      },
+      'location': {
+        'x': getRandomInt(10, 840),
+        'y': getRandomInt(130, 630)
+      }
+    });
   }
   return array;
 };
@@ -44,7 +68,9 @@ var makeElement = function (obj) {
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
-map.classList.remove('map--faded');
+var adForm = document.querySelector('.ad-form');
+var mapFilters = document.querySelector('.map__filters');
+// map.classList.remove('map--faded');
 
 var arrayPins = nearectClassifiedArray();
 var collection = document.createDocumentFragment();
@@ -122,3 +148,30 @@ if (arrayPins[0].author.avatar !== '') {
 
 var mapCard = document.querySelector('.map__filters-container');
 map.insertBefore(card, mapCard);
+
+var allSelectFields = document.querySelectorAll('select');
+for (i = 0; i < allSelectFields.length; i++) {
+  allSelectFields[i].setAttribute('disabled', 'disabled');
+}
+var allInputFields = document.querySelectorAll('input');
+for (i = 0; i < allInputFields.length; i++) {
+  allInputFields[i].setAttribute('disabled', 'disabled');
+}
+
+var activateElements = function (evt) {
+  if (evt.button === 0 || evt.key === 'Enter') {
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    mapFilters.classList.remove('ad-form-disabled');
+    for (i = 0; i < allSelectFields.length; i++) {
+      allSelectFields[i].removeAttribute('disabled');
+    }
+    for (i = 0; i < allInputFields.length; i++) {
+      allInputFields[i].removeAttribute('disabled');
+    }
+  }
+};
+
+var mapPin = document.querySelector('.map__pin--main');
+mapPin.addEventListener('mousedown', activateElements);
+mapPin.addEventListener('keydown', activateElements);
