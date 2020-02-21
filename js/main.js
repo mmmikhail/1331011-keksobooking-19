@@ -35,11 +35,7 @@ function nearectClassifiedArray() {
       'offer': {
         'title': '',
         'address': '600, 350',
-<<<<<<< HEAD
         'price': 100,
-=======
-        'price': getRandomInt(100, 10000),
->>>>>>> a53496691e7c25171d1e47676392a780766e9a79
         'type': flat,
         'rooms': getRandomInt(1, 4),
         'guests': getRandomInt(1, 10),
