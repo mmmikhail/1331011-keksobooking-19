@@ -60,8 +60,8 @@ var nearectClassifiedArray = function () {
 var makeElement = function (obj) {
   var mapLabel = document.querySelector('#pin');
   var pin = mapLabel.content.cloneNode(true);
-  var locationX = obj.location.x - PIN_SIZE_X;
-  var locationY = obj.location.y - PIN_SIZE_Y;
+  var locationX = obj.location.x - 40;
+  var locationY = obj.location.y - 165;
   pin.querySelector('.map__pin').setAttribute('style', 'left: ' + locationX + 'px; top: ' + locationY + 'px;');
   var image = pin.querySelector('img');
   image.src = obj.author.avatar;
@@ -84,6 +84,7 @@ for (var j = 0; j <= N_PINS; j++) {
 }
 
 mapPins.appendChild(collection);
+
 var hideElement = function (element) {
   element.hidden = true;
 };
