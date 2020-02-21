@@ -1,5 +1,9 @@
 'use strict';
 
+var PIN_SIZE_X = 40;
+var PIN_SIZE_Y = 165;
+var N_PINS = 7;
+
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -10,11 +14,10 @@ var roomType = ['palace', 'flat', 'house', 'bungalo'];
 var roomNames = {'palace': 'Дворец', 'flat': 'Квартира', 'house': 'Дом', 'bungalo': 'Бунгало'};
 var times = ['12:00', '13:00', '14:00'];
 var roomFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-//  var photos = [];
 
-var nearectClassifiedArray = function () {
+function nearectClassifiedArray() {
   var array = [];
-  for (var i = 0; i <= 7; i++) {
+  for (var i = 0; i <= N_PINS; i++) {
     var flat = roomType[getRandomInt(0, 3)];
     var avatarNum = i + 1;
     var checkTimeIn = times[getRandomInt(0, 2)];
@@ -25,22 +28,46 @@ var nearectClassifiedArray = function () {
       var featureNum = getRandomInt(0, 5);
       newRoomFeatures.push(roomFeatures[featureNum]);
     }
-    array.push({'author': {'avatar': 'img/avatars/user0' + avatarNum + '.png'}, 'offer': {'title': '', 'address': '600, 350', 'price': 100, 'type': flat, 'rooms': getRandomInt(1, 4), 'guests': getRandomInt(1, 10), 'checkin': checkTimeIn, 'checkout': checkTimeOut, 'features': newRoomFeatures, 'description': '', 'photos': ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg']}, 'location': {'x': getRandomInt(10, 840), 'y': getRandomInt(130, 630)}});
+    array.push({
+      'author': {
+        'avatar': 'img/avatars/user0' + avatarNum + '.png'
+      },
+      'offer': {
+        'title': '',
+        'address': '600, 350',
+        'price': 100,
+        'type': flat,
+        'rooms': getRandomInt(1, 4),
+        'guests': getRandomInt(1, 10),
+        'checkin': checkTimeIn,
+        'checkout': checkTimeOut,
+        'features': newRoomFeatures,
+        'description': '',
+        'photos': [
+          'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+          'http://o0.github.io/assets/images/tokyo/hotel2.jpg'
+        ]
+      },
+      'location': {
+        'x': getRandomInt(10, 840),
+        'y': getRandomInt(130, 630)
+      }
+    });
   }
   return array;
-};
+}
 
-var makeElement = function (obj) {
+function makeElement(obj) {
   var mapLabel = document.querySelector('#pin');
   var pin = mapLabel.content.cloneNode(true);
-  var locationX = obj.location.x - 40;
-  var locationY = obj.location.y - 165;
+  var locationX = obj.location.x - PIN_SIZE_X;
+  var locationY = obj.location.y - PIN_SIZE_Y;
   pin.querySelector('.map__pin').setAttribute('style', 'left: ' + locationX + 'px; top: ' + locationY + 'px;');
   var image = pin.querySelector('img');
   image.src = obj.author.avatar;
   image.alt = obj.offer.title;
   return pin;
-};
+}
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
@@ -49,76 +76,85 @@ map.classList.remove('map--faded');
 var arrayPins = nearectClassifiedArray();
 var collection = document.createDocumentFragment();
 
-for (var j = 0; j <= 7; j++) {
+for (var j = 0; j <= N_PINS; j++) {
   var pinElement = makeElement(arrayPins[j]);
   collection.appendChild(pinElement);
 }
 
 mapPins.appendChild(collection);
 
-var pinCard = document.querySelector('#card');
-var card = pinCard.content.cloneNode(true);
-
-var hideElement = function (element) {
+function hideElement(element) {
   element.hidden = true;
-};
-
-if (arrayPins[0].offer.title !== '') {
-  card.querySelector('.popup__title').textContent = arrayPins[0].offer.title;
-} else {
-  hideElement(card.querySelector('.popup__title'));
-}
-if (arrayPins[0].offer.address !== '') {
-  card.querySelector('.popup__text--address').textContent = arrayPins[0].offer.address;
-} else {
-  hideElement(card.querySelector('.popup__text--address'));
-}
-if (arrayPins[0].offer.price !== '') {
-  card.querySelector('.popup__text--price').textContent = arrayPins[0].offer.price + '₽/ночь';
-} else {
-  hideElement(card.querySelector('.popup__text--price'));
 }
 
-var type = arrayPins[0].offer.type;
-if (type !== '') {
-  card.querySelector('.popup__type').textContent = roomNames[type];
-} else {
-  hideElement(card.querySelector('.popup__type'));
-}
-if (arrayPins[0].offer.rooms !== '' && arrayPins[0].offer.guests !== '') {
-  card.querySelector('.popup__text--capacity').textContent = arrayPins[0].offer.rooms + ' комнаты для ' + arrayPins[0].offer.guests + ' гостей';
-} else {
-  hideElement(card.querySelector('.popup__text--capacity'));
-}
-if (arrayPins[0].offer.checkout !== '' && arrayPins[0].offer.checkin !== '') {
-  card.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayPins[0].offer.checkin + ', выезд до ' + arrayPins[0].offer.checkout;
-} else {
-  hideElement(card.querySelector('.popup__text--time'));
-}
-if (arrayPins[0].offer.features !== '') {
-  card.querySelector('.popup__features').textContent = arrayPins[0].offer.features;
-} else {
-  hideElement(card.querySelector('.popup__features'));
-}
-if (arrayPins[0].offer.description !== '') {
-  card.querySelector('.popup__description').textContent = arrayPins[0].offer.description;
-} else {
-  hideElement(card.querySelector('.popup__description'));
-}
-if (arrayPins[0].offer.photos.length > 0) {
-  var photos = card.querySelector('.popup__photos');
-  for (var i = 0; i < arrayPins[0].offer.photos.length; i++) {
-    photos.querySelector('img').src = arrayPins[0].offer.photos[i];
+function fillInfo(obj) {
+  var pinCard = document.querySelector('#card');
+  var card = pinCard.content.cloneNode(true);
+  var popupTitle = card.querySelector('.popup__title');
+  var popupAddress = card.querySelector('.popup__text--address');
+  var popupPrice = card.querySelector('.popup__text--price');
+  var popupType = card.querySelector('.popup__type');
+  var popupCapacity = card.querySelector('.popup__text--capacity');
+  var popupTime = card.querySelector('.popup__text--time');
+  var popupFeatures = card.querySelector('.popup__features');
+  var popupDescription = card.querySelector('.popup__description');
+  var popupPhotos = card.querySelector('.popup__photos');
+  var popupAvatar = card.querySelector('.popup__avatar');
+  if (obj.offer.title !== '') {
+    popupTitle.textContent = obj.offer.title;
+  } else {
+    hideElement(popupTitle);
   }
-} else {
-  hideElement(photos);
-}
-if (arrayPins[0].author.avatar !== '') {
-  card.querySelector('.popup__avatar').src = arrayPins[0].author.avatar;
-} else {
-  hideElement(card.querySelector('.popup__avatar'));
+  if (obj.offer.address !== '') {
+    popupAddress.textContent = obj.offer.address;
+  } else {
+    hideElement(popupAddress);
+  }
+  if (obj.offer.price !== '') {
+    popupPrice.textContent = obj.offer.price + '₽/ночь';
+  } else {
+    hideElement(popupPrice);
+  }
+  if (obj.offer.type !== '') {
+    popupType.textContent = roomNames[obj.offer.type];
+  } else {
+    hideElement(popupType);
+  }
+  if (obj.offer.rooms !== '' && obj.offer.guests !== '') {
+    popupCapacity.textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
+  } else {
+    hideElement(popupCapacity);
+  }
+  if (obj.offer.checkout !== '' && obj.offer.checkin !== '') {
+    popupTime.textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+  } else {
+    hideElement(popupTime);
+  }
+  if (obj.offer.features !== '') {
+    popupFeatures.textContent = obj.offer.features;
+  } else {
+    hideElement(popupFeatures);
+  }
+  if (obj.offer.description !== '') {
+    popupDescription.textContent = obj.offer.description;
+  } else {
+    hideElement(popupDescription);
+  }
+  if (obj.offer.photos.length > 0) {
+    for (var i = 0; i < obj.offer.photos.length; i++) {
+      popupPhotos.querySelector('img').src = obj.offer.photos[i];
+    }
+  } else {
+    hideElement(popupPhotos);
+  }
+  if (obj.author.avatar !== '') {
+    popupAvatar.src = obj.author.avatar;
+  } else {
+    hideElement(popupAvatar);
+  }
+  return card;
 }
 
-
+var card = fillInfo(arrayPins[0]);
 var mapCard = document.querySelector('.map__filters-container');
 map.insertBefore(card, mapCard);
