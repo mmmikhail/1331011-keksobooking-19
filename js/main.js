@@ -11,7 +11,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function getRandomELementArray(array) {
+function getRandomElementFromArray(array) {
   var index = getRandomInt(0, array.length - 1);
 
   return array[index];
@@ -25,14 +25,14 @@ function nearestClassifiedArray() {
   var array = [];
 
   for (var i = 0; i <= N_PINS; i++) {
-    var roomTypeRandom = getRandomELementArray(roomType);
+    var roomTypeRandom = getRandomElementFromArray(roomType);
     var avatarNum = i + 1;
-    var checkTimeIn = getRandomELementArray(times);
-    var checkTimeOut = getRandomELementArray(times);
+    var checkTimeIn = getRandomElementFromArray(times);
+    var checkTimeOut = getRandomElementFromArray(times);
     var featuresLen = getRandomInt(1, 3);
     var newRoomFeatures = [];
     for (var j = 0; j <= featuresLen; j++) {
-      newRoomFeatures.push(getRandomELementArray(roomFeatures));
+      newRoomFeatures.push(getRandomElementFromArray(roomFeatures));
     }
     array.push({
       author: {
