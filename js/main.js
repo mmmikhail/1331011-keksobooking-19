@@ -8,12 +8,14 @@ var MAX_ROOMS = 100;
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
+
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function getRandomElementFromArray(array) {
-  var element = getRandomInt(0, array.length - 1);
-  return array[element];
+  var index = getRandomInt(0, array.length - 1);
+
+  return array[index];
 }
 
 var roomType = ['palace', 'flat', 'house', 'bungalo'];
@@ -25,7 +27,7 @@ function nearestClassifiedArray() {
   var array = [];
 
   for (var i = 0; i <= N_PINS; i++) {
-    var flat = getRandomElementFromArray(roomType);
+    var roomTypeRandom = getRandomElementFromArray(roomType);
     var avatarNum = i + 1;
     var checkTimeIn = getRandomElementFromArray(times);
     var checkTimeOut = getRandomElementFromArray(times);
@@ -35,28 +37,28 @@ function nearestClassifiedArray() {
       newRoomFeatures.push(getRandomElementFromArray(roomFeatures));
     }
     array.push({
-      'author': {
-        'avatar': 'img/avatars/user0' + avatarNum + '.png'
+      author: {
+        avatar: 'img/avatars/user0' + avatarNum + '.png'
       },
-      'offer': {
-        'title': '',
-        'address': '600, 350',
-        'price': 100,
-        'type': flat,
-        'rooms': getRandomInt(1, 4),
-        'guests': getRandomInt(1, 10),
-        'checkin': checkTimeIn,
-        'checkout': checkTimeOut,
-        'features': newRoomFeatures,
-        'description': '',
-        'photos': [
+      offer: {
+        title: '',
+        address: '600, 350',
+        price: getRandomInt(100, 10000),
+        type: roomTypeRandom,
+        rooms: getRandomInt(1, 4),
+        guests: getRandomInt(1, 10),
+        checkin: checkTimeIn,
+        checkout: checkTimeOut,
+        features: newRoomFeatures,
+        description: '',
+        photos: [
           'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
           'http://o0.github.io/assets/images/tokyo/hotel2.jpg'
         ]
       },
-      'location': {
-        'x': getRandomInt(10, 840),
-        'y': getRandomInt(130, 630)
+      location: {
+        x: getRandomInt(10, 840),
+        y: getRandomInt(130, 630)
       }
     });
   }
