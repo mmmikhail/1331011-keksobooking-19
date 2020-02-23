@@ -7,11 +7,13 @@ var N_PINS = 7;
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
+
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function getRandomELementArray(array) {
   var index = getRandomInt(0, array.length - 1);
+
   return array[index];
 }
 
@@ -21,6 +23,7 @@ var roomFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'cond
 
 function nearestClassifiedArray() {
   var array = [];
+
   for (var i = 0; i <= N_PINS; i++) {
     var roomTypeRandom = getRandomELementArray(roomType);
     var avatarNum = i + 1;
@@ -57,6 +60,7 @@ function nearestClassifiedArray() {
       }
     });
   }
+
   return array;
 }
 
@@ -65,10 +69,12 @@ function makeElement(obj) {
   var pin = mapLabel.content.cloneNode(true);
   var locationX = obj.location.x - PIN_SIZE_X;
   var locationY = obj.location.y - PIN_SIZE_Y;
-  pin.querySelector('.map__pin').setAttribute('style', 'left: ' + locationX + 'px; top: ' + locationY + 'px;');
   var image = pin.querySelector('img');
+
+  pin.querySelector('.map__pin').setAttribute('style', 'left: ' + locationX + 'px; top: ' + locationY + 'px;');
   image.src = obj.author.avatar;
   image.alt = obj.offer.title;
+
   return pin;
 }
 
