@@ -19,7 +19,6 @@ function getRandomElementFromArray(array) {
 }
 
 var roomType = ['palace', 'flat', 'house', 'bungalo'];
-var roomNames = {'palace': 'Дворец', 'flat': 'Квартира', 'house': 'Дом', 'bungalo': 'Бунгало'};
 var times = ['12:00', '13:00', '14:00'];
 var roomFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
